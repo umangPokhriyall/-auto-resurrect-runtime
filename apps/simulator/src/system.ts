@@ -1,8 +1,16 @@
-// system.ts
+// apps/simulator/src/system.ts
 
 import { Sensor } from "./modules/sensor";
 import { Processor } from "./modules/processor";
 import { Transmitter } from "./modules/transmitter";
+
+import { checkInvariants } from "runtime-core/invariants";
+import { detectFaults } from "runtime-core/detectors";
+import { matchSignature } from "runtime-core/signatures";
+import { decide } from "runtime-core/decision-engine";
+import { executeDecision } from "runtime-core/executor";
+import { FaultInjector } from "./faults";
+
 
 export class EmbeddedSystem {
     private sensor = new Sensor();
@@ -13,19 +21,58 @@ export class EmbeddedSystem {
         console.log("[SYSTEM] Starting embedded pipeline...");
 
         setInterval(() => {
-            // 1. Read sensor
+            const now = Date.now();
+
             const sensorData = this.sensor.read();
 
-            // 2. Process data
-            const processed = this.processor.process(sensorData);
+            if (!sensorData) {
+                console.log("[SYSTEM] Sensor data missing");
+                return;
+            }
 
-            // 3. Transmit result
+            const processed = this.processor.process(sensorData);
             this.transmitter.transmit(processed);
 
-            // Telemetry (for later runtime)
-            console.log(
-                `[TELEMETRY] sensor_heartbeat=${this.sensor.heartbeat()}`
-            );
+            // ---- TELEMETRY SNAPSHOT ----
+            const telemetry = {
+                now,
+                heartbeatTs: this.processor.heartbeat(),
+                latencyMs: processed.latencyMs,
+            };
+
+            // ---- RUNTIME PIPELINE ----
+            const violations = checkInvariants(telemetry);
+
+            if (violations.length > 0) {
+                console.log("[VIOLATION]", violations.map(v => v.invariantId));
+            }
+
+            const faults = detectFaults(violations, now);
+
+            if (faults.length > 0) {
+                const signature = matchSignature(faults);
+                console.log(`[SIGNATURE] ${signature}`);
+
+                const decision = decide(signature);
+                executeDecision(decision, this);
+            }
         }, 1000);
+    }
+
+    // ---- RECOVERY HOOKS ----
+    restartModule(name: string) {
+        if (name === "processor") {
+            FaultInjector.clearFault("PROCESSOR_STALL");
+            this.processor.reset();
+            console.log("[RECOVERED] Processor healthy");
+        }
+    }
+
+
+
+    degradeModule(name: string) {
+        if (name === "processor") {
+            this.processor.enableSafeMode();
+        }
     }
 }

@@ -30,6 +30,9 @@
     },
     "apps/simulator": {
       "name": "simulator",
+      "dependencies": {
+        "runtime-core": "*",
+      },
       "devDependencies": {
         "@types/bun": "latest",
       },
@@ -84,6 +87,9 @@
     },
     "packages/runtime-core": {
       "name": "runtime-core",
+      "dependencies": {
+        "shared-types": "*",
+      },
       "devDependencies": {
         "@types/bun": "latest",
       },

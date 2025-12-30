@@ -1,21 +1,15 @@
-// decision.ts
+// packages/shared-types/src/decision.ts
 
 import type { FaultSignature } from "./fault";
 
-// Allowed recovery actions
 export type RecoveryActionType =
     | "RESTART_MODULE"
-    | "ISOLATE_MODULE"
-    | "SWITCH_REDUNDANT_PATH"
     | "DEGRADE_MODE"
-    | "NO_ACTION";
+    | "NO_OP";
 
-// What the decision engine outputs
-export interface RecoveryDecision {
-    action: RecoveryActionType;
-    target: string;              // module name or system
-    reason: string;              // human-readable justification
+export interface Decision {
     signature: FaultSignature;
-    priority: number;            // higher = executed first
-    timestamp: number;
+    action: RecoveryActionType;
+    target: string;
+    reason: string;
 }

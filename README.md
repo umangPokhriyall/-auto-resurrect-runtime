@@ -67,6 +67,22 @@ Observe → Detect → Classify → Decide → Recover → Continue
 
 ---
 
+## Current Prototype Status (Round 1)
+
+The current implementation demonstrates:
+
+- A simulated embedded-style processing pipeline (Sensor → Processor → Transmitter)
+- Real-time telemetry generation (latency, heartbeat)
+- Deterministic invariant checks (latency bounds)
+- Temporal fault detection using sliding windows
+- Fault signature classification (e.g., THREAD_STALL)
+- Autonomous recovery via targeted module restart
+- Continued system operation without full restart
+
+Hardware-level reconfiguration and FPGA mapping are demonstrated conceptually and planned for later stages.
+
+---
+
 ## 🔍 Failure Detection Engine (Low-Level & Deterministic)
 
 ### What We Monitor
@@ -75,9 +91,8 @@ The system defines **invariants** — properties that must always hold.
 
 **Examples:**
 - Module heartbeat interval ≤ 200ms
-- Queue depth ≤ threshold
 - Response latency within time window
-- Data checksum consistency
+
 
 ### How Detection Works
 

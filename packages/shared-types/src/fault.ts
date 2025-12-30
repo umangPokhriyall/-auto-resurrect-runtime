@@ -13,17 +13,19 @@ export type FaultSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
 // Atomic fault event emitted by detection engine
 export interface FaultEvent {
-    id: string;               // unique id
-    type: string;             // e.g. HEARTBEAT_TIMEOUT, LATENCY_VIOLATION
-    source: FaultSource;      // which module
+    id: string;
+    invariantId: string;
+    source: string;
     severity: FaultSeverity;
-    timestamp: number;        // epoch ms
-    details?: Record<string, any>; // optional diagnostic data
+    firstSeen: number;
+    lastSeen: number;
+    count: number;
 }
 
-// Higher-level interpreted fault pattern
-export interface FaultSignature {
-    name: string;             // e.g. PROCESSOR_STALL
-    contributingFaults: FaultEvent[];
-    confidence: number;       // 0.0 – 1.0 (rule-based, not ML)
-}
+export type FaultSignature =
+    | "THREAD_STALL"
+    | "LATENCY_DEGRADATION"
+    | "UNKNOWN";
+
+
+

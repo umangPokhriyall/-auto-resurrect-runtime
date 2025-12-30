@@ -2,6 +2,9 @@
   "name": "shared-types",
   "module": "index.ts",
   "type": "module",
+  "exports": {
+    "./client": "./index.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },

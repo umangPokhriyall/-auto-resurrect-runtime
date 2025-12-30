@@ -2,8 +2,18 @@
   "name": "runtime-core",
   "module": "index.ts",
   "type": "module",
+  "exports": {
+    "./invariants": "./src/invariants/invariants.ts",
+    "./detectors": "./src/detectors/detector.ts",
+    "./decision-engine": "./src/decision-engine/engine.ts",
+    "./executor": "./src/executors/actions.ts",
+    "./signatures": "./src/signatures/matcher.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
+  },
+  "dependencies": {
+    "shared-types": "*"
   },
   "peerDependencies": {
     "typescript": "^5"
