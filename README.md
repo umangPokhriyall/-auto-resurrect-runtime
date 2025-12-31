@@ -126,7 +126,7 @@ Multiple correlated violations = Fault Signature
 
 ---
 
-## Decision Engine (Not "AI Decides")
+## Decision Engine
 
 The decision engine maps **fault signatures → recovery actions** using a rule-based priority system.
 
