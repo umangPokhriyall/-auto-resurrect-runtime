@@ -228,6 +228,20 @@ Planned improvements:
 
 ---
 
+---
+
+## Team Contributions
+
+| Team Member | Primary Responsibility |
+|------------|------------------------|
+| Umang Pokhriyal | System architecture design, invariant modeling |
+| Aryan Gairola  | Fault injection simulator, telemetry pipeline |
+| Rahul Rawat | Signature matching & decision engine |
+| Vashu Chauhan | Recovery executor, documentation & demo scenarios |
+
+> All members contributed equally to design discussions, testing, and validation of the runtime behavior.
+
+
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
