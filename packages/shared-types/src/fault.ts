@@ -1,6 +1,4 @@
-// fault.ts
 
-// Where the fault originated
 export type FaultSource =
     | "sensor"
     | "processor"
@@ -8,10 +6,12 @@ export type FaultSource =
     | "system"
     | "runtime";
 
-// Severity is important for decision priority
+
 export type FaultSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 
-// Atomic fault event emitted by detection engine
+export type FaultNature = "TRANSIENT" | "PERSISTENT";
+
+
 export interface FaultEvent {
     id: string;
     invariantId: string;
@@ -20,6 +20,7 @@ export interface FaultEvent {
     firstSeen: number;
     lastSeen: number;
     count: number;
+    nature?: FaultNature;
 }
 
 export type FaultSignature =
